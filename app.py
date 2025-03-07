@@ -1,11 +1,8 @@
-
-
 import streamlit as st
 import pickle
 import numpy as np
 
 # Load the trained model, encoder, and scaler
-
 with open('RFC_Model.pkl', 'rb') as file:
     model = pickle.load(file)
 with open('lbl_encoder.pkl', 'rb') as file:
@@ -22,10 +19,11 @@ state = st.selectbox("State Code", ['KS', 'OH', 'NJ', 'OK', 'AL', 'MA', 'MO', 'L
  'ID', 'VT', 'VA', 'TX', 'FL', 'CO', 'AZ', 'SC', 'NE', 'WY', 'HI', 'IL', 'NH', 'GA',
  'AK', 'MD', 'AR', 'WI', 'OR', 'MI', 'DE', 'UT', 'CA', 'MN', 'SD', 'NC', 'WA', 'NM',
  'NV', 'DC', 'KY', 'ME', 'MS', 'TN', 'PA', 'CT', 'ND'])
-state_encoded = encoder.transform(state)
+
+# Fixing Label Encoding Issue
+state_encoded = encoder.transform([state])  # Wrap in a list
 
 area_code = st.selectbox("Area Code", ['415', '408', '510'])
-
 account_length = st.number_input("Account Length", min_value=1, max_value=243, step=1)
 
 voice_plan = st.selectbox("Voice Plan", ["no", "yes"])
@@ -46,25 +44,21 @@ night_calls = st.number_input("Night Calls", min_value=0, max_value=175, step=1)
 
 customer_calls = st.number_input("Customer Service Calls", min_value=0, max_value=9, step=1)
 
-total_charge=st.number_input(' Gross Total charges',min_value=31, max_value=87, step=1)
+total_charge = st.number_input("Gross Total Charges", min_value=31, max_value=87, step=1)
 
-# Ensuring prorper forat for inout
+# Fixing Proper Format for Input
 area_code = int(area_code)
 
 voice_plan = 1 if voice_plan == "yes" else 0
 intl_plan = 1 if intl_plan == "yes" else 0
 
-# Convert to NumPy array
-input_data = np.array([[state[0], area_code, account_length, voice_plan, voice_messages,
-                        intl_plan, intl_mins, intl_calls, day_mins, day_calls, eve_mins, eve_calls,
-                        night_mins, night_calls, customer_calls,total_charge]])
-
-# Apply Scaling
+# Fixing Duplicate Input Data Conversion
 input_data = np.array([[float(state_encoded[0]), float(area_code), float(account_length),
                         float(voice_plan), float(voice_messages), float(intl_plan), float(intl_mins), float(intl_calls),
                         float(day_mins), float(day_calls), float(eve_mins), float(eve_calls),
-                        float(night_mins), float(night_calls), float(customer_calls),float(total_charge)]])
+                        float(night_mins), float(night_calls), float(customer_calls), float(total_charge)]])
 
+# Ensure Correct Shape Before Scaling
 input_data_scaled = scaler.transform(input_data)
 
 # Predict Button
@@ -76,5 +70,3 @@ if st.button("Predict Churn"):
         st.error("This customer is likely to churn. ❌")
     else:
         st.success("This customer is not likely to churn. ✅")
-
-
