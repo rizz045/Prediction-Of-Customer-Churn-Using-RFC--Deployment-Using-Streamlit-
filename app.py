@@ -59,7 +59,7 @@ input_data = np.array([[float(state_encoded[0]), float(area_code), float(account
                         float(night_mins), float(night_calls), float(customer_calls), float(total_charge)]])
 
 # Ensure Correct Shape Before Scaling
-input_data_scaled = scaler.transform([input_data])
+input_data_scaled = scaler.transform(input_data)
 
 # Predict Button
 if st.button("Predict Churn"):
