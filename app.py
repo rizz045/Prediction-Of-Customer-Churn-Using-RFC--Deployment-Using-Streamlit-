@@ -44,7 +44,8 @@ night_calls = st.number_input("Night Calls", min_value=0, max_value=175, step=1)
 
 customer_calls = st.number_input("Customer Service Calls", min_value=0, max_value=9, step=1)
 
-total_charge = st.number_input("Gross Total Charges", min_value=31, max_value=87, step=1, format="%.2f")
+# total_charge = st.number_input("Gross Total Charges", min_value=31, max_value=87, step=1, format="%.2f")
+total_charge = st.number_input("Gross Total Charges", min_value=31.0, max_value=87.0, step=0.1, format="%.2f")
 
 # Fixing Proper Format for Input
 area_code = int(area_code)
