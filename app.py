@@ -16,34 +16,9 @@ st.image("https://thumbs.dreamstime.com/b/customer-churn-mark-charts-inscription
 
 # Custom Styling
 st.markdown("""
-    <style>
-        body {
-            background-color: #0a0a0a;
-        }
-        .stApp {
-            background-color: white;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.1);
-        }
-        .stButton>button {
-            background-color: #007BFF !important;
-            color: white !important;
-            font-weight: bold;
-            border-radius: 10px;
-            padding: 10px;
-        }
-        .stButton>button:hover {
-            background-color: #0056b3 !important;
-        }
-        .stMarkdown {
-            text-align: center;
-        }
-        h1 {
-            color: #007BFF;
-            text-align: center;
-        }
-    </style>
+    <h1 style='text-align: center; color: #4CAF50;'>Customer Churn Prediction</h1>
+    <p style='text-align: center;'>Enter customer details to predict churn.</p>
+    <hr style='border: 1px solid #4CAF50;'>
 """, unsafe_allow_html=True)
 
 # App Title
