@@ -15,7 +15,7 @@ with open('scaler.pkl', 'rb') as file:
 
 # Streamlit UI - Improved Version
 st.set_page_config(page_title="Customer Churn Prediction", layout="centered")
-st.image("https://thumbs.dreamstime.com/b/customer-churn-mark-charts-inscription-293698142.jpg", use_column_width=True)
+st.image("https://thumbs.dreamstime.com/b/customer-churn-mark-charts-inscription-293698142.jpg", use_container_width=True)
 
 st.markdown("""
     <h1 style='text-align: center; color: #4CAF50;'>Customer Churn Prediction</h1>
