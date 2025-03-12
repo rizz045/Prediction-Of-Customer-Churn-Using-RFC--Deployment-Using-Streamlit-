@@ -2,6 +2,8 @@ import streamlit as st
 import pickle
 import numpy as np
 import time
+import warnings
+warnings.filterwarnings('ignore')
 
 # Load the trained model, encoder, and scaler
 with open('RFC_Model.pkl', 'rb') as file:
