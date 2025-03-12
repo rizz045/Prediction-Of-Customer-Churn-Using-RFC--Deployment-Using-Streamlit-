@@ -3,17 +3,13 @@ import pickle
 import numpy as np
 import time
 
-# Load the trained model, encoder, and scaler
+# Load Model, Encoder & Scaler
 with open('RFC_Model.pkl', 'rb') as file:
     model = pickle.load(file)
 with open('lbl_encoder.pkl', 'rb') as file:
     encoder = pickle.load(file)
 with open('scaler.pkl', 'rb') as file:
     scaler = pickle.load(file)
-
-# Streamlit UI - Improved Version
-st.set_page_config(page_title="Customer Churn Prediction", layout="centered")
-st.image("https://thumbs.dreamstime.com/b/customer-churn-mark-charts-inscription-293698142.jpg", use_container_width=True)
 
 # Set Theme (White & Blue)
 st.set_page_config(
