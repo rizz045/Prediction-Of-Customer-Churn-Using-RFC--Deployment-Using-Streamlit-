@@ -18,7 +18,7 @@ st.image("https://thumbs.dreamstime.com/b/customer-churn-mark-charts-inscription
 st.markdown("""
     <style>
         body {
-            background-color: #f8f9fa;
+            background-color: #0a0a0a;
         }
         .stApp {
             background-color: white;
