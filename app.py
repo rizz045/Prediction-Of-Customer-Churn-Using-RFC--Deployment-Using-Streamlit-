@@ -11,64 +11,64 @@ with open('lbl_encoder.pkl', 'rb') as file:
 with open('scaler.pkl', 'rb') as file:
     scaler = pickle.load(file)
 
-# Streamlit UI
+# Streamlit UI - Improved Version
 st.set_page_config(page_title="Customer Churn Prediction", layout="centered")
-st.title("📊 Customer Churn Prediction")
-st.write("Enter customer details below to predict churn.")
+st.image("https://img.freepik.com/free-vector/customer-support-flat-concept_23-2148154536.jpg", use_column_width=True)
 
-# Sidebar
-st.sidebar.title("ℹ️ About")
-st.sidebar.write("This app predicts whether a customer is likely to churn based on their details.")
-
-# Layout Optimization
-col1, col2 = st.columns(2)
+st.markdown("""
+    <h1 style='text-align: center; color: #4CAF50;'>Customer Churn Prediction</h1>
+    <p style='text-align: center;'>Enter customer details to predict churn.</p>
+    <hr style='border: 1px solid #4CAF50;'>
+""", unsafe_allow_html=True)
 
 # Input Fields
-with col1:
-    state = st.selectbox("State Code", encoder.classes_)
-    area_code = st.radio("Area Code", ['415', '408', '510'])
-    account_length = st.slider("Account Length", min_value=1, max_value=205, value=100)
-    voice_plan = st.radio("Voice Plan", ["No", "Yes"])
-    voice_messages = st.slider("Voice Messages", min_value=0, max_value=42, value=10)
-    intl_plan = st.radio("International Plan", ["No", "Yes"])
-    intl_mins = st.slider("International Minutes", min_value=3.3, max_value=17.2, value=10.0)
-    intl_calls = st.slider("International Calls", min_value=1, max_value=10, value=5)
+state = st.selectbox("State Code", ['KS', 'OH', 'NJ', 'OK', 'AL', 'MA', 'MO', 'LA', 'WV', 'IN', 'RI', 'IA', 'MT', 'NY',
+ 'ID', 'VT', 'VA', 'TX', 'FL', 'CO', 'AZ', 'SC', 'NE', 'WY', 'HI', 'IL', 'NH', 'GA',
+ 'AK', 'MD', 'AR', 'WI', 'OR', 'MI', 'DE', 'UT', 'CA', 'MN', 'SD', 'NC', 'WA', 'NM',
+ 'NV', 'DC', 'KY', 'ME', 'MS', 'TN', 'PA', 'CT', 'ND'])
+state_encoded = encoder.transform([state])
 
-with col2:
-    day_mins = st.slider("Day Minutes", min_value=0.0, max_value=351.5, value=180.0)
-    day_calls = st.slider("Day Calls", min_value=0, max_value=165, value=80)
-    eve_mins = st.slider("Evening Minutes", min_value=0.0, max_value=363.7, value=200.0)
-    eve_calls = st.slider("Evening Calls", min_value=0, max_value=170, value=85)
-    night_mins = st.slider("Night Minutes", min_value=0.0, max_value=395.0, value=180.0)
-    night_calls = st.slider("Night Calls", min_value=0, max_value=175, value=90)
-    customer_calls = st.slider("Customer Service Calls", min_value=0, max_value=9, value=2)
-    total_charge = st.slider("Gross Total Charges", min_value=31.0, max_value=87.0, value=50.0)
+area_code = st.selectbox("Area Code", ['415', '408', '510'])
+account_length = st.slider("Account Length", 1, 205, 50)
 
-# Encode categorical inputs
-state_encoded = encoder.transform([state])[0]
+voice_plan = st.radio("Voice Plan", ["No", "Yes"], horizontal=True)
+voice_messages = st.slider("Voice Messages", 0, 42, 10)
+
+intl_plan = st.radio("International Plan", ["No", "Yes"], horizontal=True)
+intl_mins = st.number_input("International Minutes", min_value=3.3, max_value=17.2, step=0.1, format="%.2f")
+intl_calls = st.slider("International Calls", 1, 10, 5)
+
+day_mins = st.number_input("Day Minutes", min_value=0.0, max_value=351.5, step=1.0, format="%.2f")
+day_calls = st.slider("Day Calls", 0, 165, 80)
+
+eve_mins = st.number_input("Evening Minutes", min_value=0.0, max_value=363.7, step=1.0, format="%.2f")
+eve_calls = st.slider("Evening Calls", 0, 170, 85)
+
+night_mins = st.number_input("Night Minutes", min_value=0.0, max_value=395.0, step=1.0, format="%.2f")
+night_calls = st.slider("Night Calls", 0, 175, 90)
+
+customer_calls = st.slider("Customer Service Calls", 0, 9, 3)
+total_charge = st.number_input("Gross Total Charges", min_value=31.0, max_value=87.0, step=0.1, format="%.2f")
+
+# Convert Categorical Inputs
 area_code = int(area_code)
 voice_plan = 1 if voice_plan == "Yes" else 0
 intl_plan = 1 if intl_plan == "Yes" else 0
 
-# Prepare input for model
-input_data = np.array([[
-    float(state_encoded), float(area_code), float(account_length),
-    float(voice_plan), float(voice_messages), float(intl_plan), float(intl_mins), float(intl_calls),
-    float(day_mins), float(day_calls), float(eve_mins), float(eve_calls),
-    float(night_mins), float(night_calls), float(customer_calls), float(total_charge)
-]])
+# Prepare Input Data
+input_data = np.array([[float(state_encoded[0]), float(area_code), float(account_length),
+                        float(voice_plan), float(voice_messages), float(intl_plan), float(intl_mins), float(intl_calls),
+                        float(day_mins), float(day_calls), float(eve_mins), float(eve_calls),
+                        float(night_mins), float(night_calls), float(customer_calls), float(total_charge)]])
+input_data_scaled = scaler.transform(input_data)
 
-# Scale input
-data_scaled = scaler.transform(input_data)
+# Predict Button with Loading Effect
+if st.button("Predict Churn"):
+    with st.spinner("Analyzing customer data..."):
+        time.sleep(0.1)  # Simulate a short delay for loading effect
+        prediction = model.predict(input_data_scaled)
 
-# Predict Button
-if st.button("🔍 Predict Churn"):
-    with st.spinner("Analyzing customer data... Please wait ⏳"):
-        time.sleep(0.1)  # Simulate loading effect
-        prediction = model.predict(data_scaled)
-        
-        # Display Result
         if prediction[0] == 1:
-            st.error("🚨 This customer is **likely** to churn! ❌")
+            st.error("This customer is likely to churn. ❌")
         else:
-            st.success("✅ This customer is **not likely** to churn!")
+            st.success("This customer is not likely to churn. ✅")
