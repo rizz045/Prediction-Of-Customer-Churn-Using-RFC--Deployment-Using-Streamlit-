@@ -11,12 +11,8 @@ with open('lbl_encoder.pkl', 'rb') as file:
 with open('scaler.pkl', 'rb') as file:
     scaler = pickle.load(file)
 
-# Set Theme (White & Blue)
-st.set_page_config(
-    page_title="Customer Churn Prediction",
-    page_icon="📊",
-    layout="centered"
-)
+st.set_page_config(page_title="Customer Churn Prediction", layout="centered")
+st.image("https://thumbs.dreamstime.com/b/customer-churn-mark-charts-inscription-293698142.jpg", use_container_width=True)
 
 # Custom Styling
 st.markdown("""
